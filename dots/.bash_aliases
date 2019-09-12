@@ -51,30 +51,6 @@ function curl() {
    fi
 }
 
-function java9() {
-         export JAVA_HOME=~/Programs/jdk1.9.0
-         export JAVA_OPTS="-Xmx1024m -XX:CICompilerCount=1 -XX:TieredStopAtLevel=1 -Djava.security.egd=file:/dev/./urandom"
-         export ANT_OPTS=$JAVA_OPTS
-         export MAVEN_OPTS=$JAVA_OPTS
-         export PATH=${PATH/jdk1.?.0/jdk1.9.0}
-}
-
-function java8() {
-         export JAVA_HOME=~/Programs/jdk1.8.0
-         export JAVA_OPTS="-Xmx1024m -XX:CICompilerCount=1 -XX:TieredStopAtLevel=1 -Djava.security.egd=file:/dev/./urandom"
-         export ANT_OPTS=$JAVA_OPTS
-         export MAVEN_OPTS=$JAVA_OPTS
-         export PATH=${PATH/jdk1.?.0/jdk1.8.0}
-}
-
-function java7() {
-         export JAVA_HOME=~/Programs/jdk1.7.0
-         export JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m -XX:CICompilerCount=1 -XX:TieredStopAtLevel=1 -Djava.security.egd=file:/dev/./urandom"
-         export ANT_OPTS=$JAVA_OPTS
-         export MAVEN_OPTS=$JAVA_OPTS
-         export PATH=${PATH/jdk1.?.0/jdk1.7.0}
-}
-
 function mvn {
          dir=`pwd`
          while [ -e $dir/pom.xml ] && ! [ -e $dir/mvnw ] && ! [ -z $dir ]; do dir=${dir%/*}; done
