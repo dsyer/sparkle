@@ -32,13 +32,11 @@ function curl() {
    local text;
    while [ "$1" != "" ]; do
        if [ "$1" = "--text" ]; then
+           flags+=( -H Content-Type:text/plain);
            text=$1;
        elif [ "$1" = "--json" ]; then
-           flags+=(-H Accept:application/json);
-           text="--text";
-       elif [ "$1" = "--jsonup" ]; then
            flags+=(-H Accept:application/json -H Content-Type:application/json);
-           text="--text"
+           text="--text";
        else
            args+=("$1")
        fi
