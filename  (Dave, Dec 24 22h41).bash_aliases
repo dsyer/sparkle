@@ -32,11 +32,14 @@ function curl() {
    local text;
    while [ "$1" != "" ]; do
        if [ "$1" = "--text" ]; then
-           flags+=( -H Content-Type:text/plain);
+           flags+=(-H Content-Type:text/plain);
            text=$1;
        elif [ "$1" = "--json" ]; then
-           flags+=(-H Accept:application/json -H Content-Type:application/json);
+           flags+=(-H Accept:application/json);
            text="--text";
+       elif [ "$1" = "--jsonup" ]; then
+           flags+=(-H Accept:application/json -H Content-Type:application/json);
+           text="--text"
        else
            args+=("$1")
        fi
@@ -47,6 +50,30 @@ function curl() {
    else
        /usr/bin/curl "${flags[@]}" "${args[@]}"
    fi
+}
+
+function java9() {
+         export JAVA_HOME=~/Programs/jdk1.9.0
+         export JAVA_OPTS="-Xmx1024m -XX:CICompilerCount=1 -XX:TieredStopAtLevel=1 -Djava.security.egd=file:/dev/./urandom"
+         export ANT_OPTS=$JAVA_OPTS
+         export MAVEN_OPTS=$JAVA_OPTS
+         export PATH=${PATH/jdk1.?.0/jdk1.9.0}
+}
+
+function java8() {
+         export JAVA_HOME=~/Programs/jdk1.8.0
+         export JAVA_OPTS="-Xmx1024m -XX:CICompilerCount=1 -XX:TieredStopAtLevel=1 -Djava.security.egd=file:/dev/./urandom"
+         export ANT_OPTS=$JAVA_OPTS
+         export MAVEN_OPTS=$JAVA_OPTS
+         export PATH=${PATH/jdk1.?.0/jdk1.8.0}
+}
+
+function java7() {
+         export JAVA_HOME=~/Programs/jdk1.7.0
+         export JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m -XX:CICompilerCount=1 -XX:TieredStopAtLevel=1 -Djava.security.egd=file:/dev/./urandom"
+         export ANT_OPTS=$JAVA_OPTS
+         export MAVEN_OPTS=$JAVA_OPTS
+         export PATH=${PATH/jdk1.?.0/jdk1.7.0}
 }
 
 function mvn {

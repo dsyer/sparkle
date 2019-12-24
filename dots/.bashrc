@@ -110,14 +110,13 @@ if [ -d "$GOROOT/bin" ] ; then
     export PATH="$GOROOT/bin":$PATH
 fi
 
-export JAVA_HOME=~/Programs/jdk1.8.0
 export JAVA_OPTS="-noverify -XX:CICompilerCount=1 -XX:TieredStopAtLevel=1 -Djava.security.egd=file:/dev/./urandom"
 export ANT_OPTS=$JAVA_OPTS
 export MAVEN_OPTS=$JAVA_OPTS
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
-	PATH="$HOME/bin:$HOME/Programs/apache-maven/bin:$HOME/Programs/apache-ant/bin:$PATH:/opt/vagrant/bin:$JAVA_HOME/bin"
+	PATH="$HOME/bin:$HOME/Programs/apache-maven/bin:$HOME/Programs/apache-ant/bin:$PATH:/opt/vagrant/bin"
 # /var/lib/gems/1.8/bin:$PATH"
 fi
 if [ -s "$HOME/.rvmrc" ]; then
