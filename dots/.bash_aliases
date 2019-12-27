@@ -15,7 +15,7 @@ alias ruby="ifgem ruby"
 alias cucumber="ifgem cucumber"
 alias prmpt="PS1='$ '"
 alias renet='(cd ~; killall nm-applet; nohup nm-applet >& /dev/null &)'
-if [ -f ~/bin/hub ]; then
+if which hub > /dev/null; then
    alias git=hub
    [ -f ~/bin/hub.bash_completion.sh ] && . ~/bin/hub.bash_completion.sh
 fi
