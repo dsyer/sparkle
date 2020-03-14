@@ -99,6 +99,12 @@ if [ ."" != ."$PS1" ]; then
     if [ -f /etc/bash_completion ]; then
 		. /etc/bash_completion
 	fi
+	# For nix-shell
+	for f in ${buildInputs}; do
+		if [ -d $f/share/bash-completion/completions ]; then
+			. $f/share/bash-completion/completions/*
+		fi
+	done
 
 fi
 
