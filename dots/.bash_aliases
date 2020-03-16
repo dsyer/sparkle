@@ -14,6 +14,7 @@ alias irb="ifgem irb"
 alias ruby="ifgem ruby"
 alias cucumber="ifgem cucumber"
 alias prmpt="PS1='$ '"
+alias nix-shell='nix-shell --command "$(declare -p PS1 | sed -e s/=/=nix:/); return"'
 alias renet='(cd ~; killall nm-applet; nohup nm-applet >& /dev/null &)'
 if which hub > /dev/null; then
    alias git=hub
