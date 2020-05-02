@@ -110,41 +110,20 @@ fi
 
 export DOCKER_BUILDKIT=1
 
-export GOPATH=~/dev/go
-export GOROOT=/usr/lib/go-1.12
-if [ -d "$GOROOT/bin" ] ; then
-    export PATH="$GOROOT/bin":$PATH
-fi
-
 export JAVA_OPTS="-noverify -XX:CICompilerCount=1 -XX:TieredStopAtLevel=1 -Djava.security.egd=file:/dev/./urandom"
 export ANT_OPTS=$JAVA_OPTS
 export MAVEN_OPTS=$JAVA_OPTS
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
-	PATH="$HOME/bin:$HOME/Programs/apache-maven/bin:$HOME/Programs/apache-ant/bin:$PATH:/opt/vagrant/bin"
-# /var/lib/gems/1.8/bin:$PATH"
+	PATH="$HOME/bin:$HOME/Programs/apache-maven/bin:$HOME/Programs/apache-ant/bin:$PATH"
 fi
-if [ -s "$HOME/.rvmrc" ]; then
-	source "$HOME/.rvmrc"
-fi 
-# to have $rvm_path defined if set
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
-# export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-
-# export SPRING_CONFIG_LOCATION=$HOME/.spring/
 
 # added by travis gem
 [ -f /home/dsyer/.travis/travis.sh ] && source /home/dsyer/.travis/travis.sh
 
+if which java >/dev/null 2>&1; then
+	export JAVA_HOME=$(dirname $(readlink -f `which java`) | sed -e 's,/bin$,,')
+fi
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-[[ -s "/home/dsyer/.sdkman/bin/sdkman-init.sh" && ! $(which sdkman-init.sh) ]] && source "/home/dsyer/.sdkman/bin/sdkman-init.sh"
-
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+! [ -d /etc/nixos ] && [[ -s "/home/dsyer/.sdkman/bin/sdkman-init.sh" && ! $(which sdkman-init.sh > /dev/null l 2>&1) ]] && source "/home/dsyer/.sdkman/bin/sdkman-init.sh"

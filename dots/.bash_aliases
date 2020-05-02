@@ -1,54 +1,24 @@
 alias dos2unix=fromdos
 alias unix2dos=todos
+
 alias unat='xmodmap -e "keycode 24 = q Q at at at at"'
 alias gb='setxkbmap -layout gb'
+
 alias unstick='xdotool key --clearmodifiers keyup Control_L keyup Control_R keyup Shift_L keyup Shift_R keyup Super_L keyup Meta_L keyup Meta_R'
 function ifgem() {
   if [ -f Gemfile ]; then bundle exec $*; else $*; fi
 }
-alias rake="ifgem rake"
-alias rackup="ifgem rackup"
-alias shotgun="ifgem shotgun"
-alias rspec="ifgem rspec"
-alias irb="ifgem irb"
-alias ruby="ifgem ruby"
-alias cucumber="ifgem cucumber"
+
 alias prmpt="PS1='$ '"
+
 alias nix-shell='nix-shell --command "$(declare -p PS1 | sed -e s/=/=nix:/); return"'
-alias renet='(cd ~; killall nm-applet; nohup nm-applet >& /dev/null &)'
+
 if which hub > /dev/null; then
    alias git=hub
-   [ -f ~/bin/hub.bash_completion.sh ] && . ~/bin/hub.bash_completion.sh
 fi
-# alias spring='java ${JAVA_OPTS} -jar ~/dev/bootstrap/bootstrap/spring-cli/target/spring-cli-0.5.0.BUILD-SNAPSHOT'
+
 alias scale='gsettings set com.canonical.Unity.Interface text-scale-factor'
 alias clear="echo -ne '\033c'"
-
-# useful for terminal demos where the service returns unterminated content
-alias jcurl='\curl -H "Accept: application/json"'
-alias jjcurl='\curl -H "Accept: application/json" -H "Content-Type: application/json"'
-function curl() {
-   local args=();
-   local flags=();
-   local text;
-   while [ "$1" != "" ]; do
-       if [ "$1" = "--text" ]; then
-           flags+=( -H Content-Type:text/plain);
-           text=$1;
-       elif [ "$1" = "--json" ]; then
-           flags+=(-H Accept:application/json -H Content-Type:application/json);
-           text="--text";
-       else
-           args+=("$1")
-       fi
-       shift;
-   done
-   if [ "$text" = "--text" ]; then
-       /usr/bin/curl -w '\n' "${flags[@]}" "${args[@]}"
-   else
-       /usr/bin/curl "${flags[@]}" "${args[@]}"
-   fi
-}
 
 function mvn {
          dir=`pwd`
