@@ -114,6 +114,9 @@ export JAVA_OPTS="-noverify -XX:CICompilerCount=1 -XX:TieredStopAtLevel=1 -Djava
 export ANT_OPTS=$JAVA_OPTS
 export MAVEN_OPTS=$JAVA_OPTS
 
+### Frustrated with perl and stow
+#export LC_ALL=C
+
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
 	PATH="$HOME/bin:$HOME/Programs/apache-maven/bin:$HOME/Programs/apache-ant/bin:$PATH"
