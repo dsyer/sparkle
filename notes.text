@@ -22,7 +22,11 @@
   and (optionally)
 
      -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl.need.client.auth=false
-     
+
+# Find and Prune
+
+    $ find . -name .git -prune -o -type f -exec ...
+
 # Split Line on Separator
 
 Split classpath on ":" separator:
@@ -35,7 +39,19 @@ Clean up:
 
     $ docker rm $(docker ps --filter status=exited -q)
     $ docker rmi $(docker images | grep "^<none>" | awk '{print $3}')
-     
+
+Better:
+
+	$ docker system prune -a
+
+# Videos
+
+Show the webcam in a tiny window on screen (`nix-shell -p simplescreenrecorder ffmpeg-full flowblade`):
+
+    $ ffplay /dev/video0 2> /dev/null &
+	
+To record a video `simplescreenreader`; edit with `flowblade`.
+
 # JShell ProcessBuilder
 
     $ jshell
@@ -189,6 +205,10 @@ Sync with laptop:
 and back again:
 
     $ rsync -CvzaF -f 'merge,C .gitignore' dave:~/Docs/Presentations/ .
+	
+# Markup PDF
+
+Use `xournal`.
 
 # Markdown
 
@@ -298,6 +318,14 @@ downloading the whole SDK from google and using that, which worked.
     $ (cd ~/Documents/dsyerstatic.cloudfoundry.com; vmc update dsyerstatic)
 
 It's a node.js app.
+
+### Simple HTTP Server with Python
+
+Serve current directory as a static website:
+
+```
+$ python -m http.server 1234
+```
 
 ## SSH and UI on GCP
 
@@ -481,38 +509,23 @@ Split horizontally: `^x|`. Split vertically: `^xS` (shift-S). To remove a pane `
 
 * Word count.  `M-=` counts the lines and characters in region, but
   not words.
-  * `M-!` runs a shell command in the current directory (if the
+* `M-!` runs a shell command in the current directory (if the
   current buffer is a file), so `M-!` then TAB will list the files,
   select the one you want!
-  * `M-|` runs a shell comand on region (so counting a subset of the
-    current buffer is possible).
+* `M-|` runs a shell comand on region (so counting a subset of the
+  current buffer is possible).
 
 # Github Tips
 
 Pull requests.  Maintaining the author tags can be a challenge if the pull is against an old master.  You can often cherry pick though, if it's a single commit:
 
     $ git fetch git://github.com/XXXX/spring-batch master && git cherry-pick FETCH_HEAD
+	
+## Actions
+
+[Tutorial on debugging](https://github.com/spring-projects/spring-guice/milestones). Add a step with `uses: valeriangalliat/action-sshd-cloudflared@v1` and 
+the env vars you want to use in the main build step and run the shell command line logged in that step.
     
-# Pivotal
-
-there are some [third party tools](https://www.pivotaltracker.com/help/thirdpartytools) links on the Pivotal website.
-
-* Adding pivotal story ids to commit logs:
-
-  * [A hook](https://github.com/dalewking/PivotalTrackerGithook/blob/master/prepare-commit-msg) that populates the git commit log editor with comments containing all the pivotal stories it thinks might be relevant.  Works, but watch out for gerrit change-ids: you need to amend all commits to make sure the change id goes at the bottom.
-  
-  * [Another hook](https://github.com/highgroove/git_tracker) that looks in the current branch name for a story ID
-
-* Git commands (don't work for me yet): [git-pivotal](https://github.com/trydionel/git-pivotal)
-
-* Not really git-related, but this [text file uploader](https://github.com/gabehollombe/Pivotxt) looks nice.
-
-* Human-readable unique ids: [Sluglug](http://sluglug.com/).  How hard can that be?
-
-* Ruby gem; [https://github.com/jsmestad/pivotal-tracker]().
-
-Bug in filter [no hyphens](http://community.pivotaltracker.com/pivotal/topics/search_for_stories_with_names_containing_hyphens).
-
 # HTTP Monitoring with tcpdump
 
     $ sudo tcpdump 'tcp port 8080' -i any -A
@@ -618,7 +631,8 @@ the server.
   than the local one, otherwise you can't reach the edges with the
   mouse. (Possible solution with `xrandr`?)
 
-* Synergy is OK.  A bit flaky sometimes.
+* Synergy is OK.  A bit flaky sometimes. Barrier is better and more open community.
+
 * `Xdmx` supposedly can be used to create a synthetic screen from
   multiple servers.  It never really worked for me.  Allegedly Ubuntu
   repositories have buggy versions?  E.g. (with displays :1 and :2 both
@@ -741,21 +755,16 @@ to external DNS servers, e.g.
 (this seems to be important for clients on Ubuntu and iOS, not just
 Windows, as implied by the "ms").
 
-# Unity Window Manager
-
-http://askubuntu.com/questions/371915/how-to-restart-unity-panel-service
-
-    $ kill -9 $(pgrep unity-panel-ser)
-
-Better (maybe):
-
-    $ initctl restart unity-panel-service
-    
 # Local Server Tunnel
 
 https://ngrok.com/
 
     $ sudo apt-get install ngrok-client
+
+Or 
+
+    $ nix-shell -p cloudflared
+    $ cloudflared tunnel --url http://localhost:8080
 
 # SSH Tunnel
 
@@ -783,21 +792,13 @@ Example `logging.properties`
     org.apache.http.level = ALL
     groovyx.net.http.level = ALL
 
-# Squeezebox
-
-Turn on the player with this MAC:
-
-    curl -v 192.168.1.114:9000/status.txt?'p0=button&p1=power_on&player=00:04:20:23:8d:57'
-    
-Docs: http://192.168.1.114:9000/html/docs/help.html
-
 # CORS
 
 ```
 $ curl -v -X OPTIONS -H "Origin: http://localhost:9000" -H "Access-Control-Request-Method: GET" -H "Access-Control-Request-Headers: X-Foo" rest-service.guides.spring.io/greeting
 ```
 
-If you see `Access-Control-Allow-*` headers in the response then it is working. Shoudl work with Spring Security as well but the status code will be 401 for an unauthenticated request.
+If you see `Access-Control-Allow-*` headers in the response then it is working. Should work with Spring Security as well but the status code will be 401 for an unauthenticated request.
 
 # CRIU
 
@@ -825,3 +826,88 @@ Articles and user guides:
 - https://github.com/samdroid-apps/nix-articles
 - https://nixos.org/nix/manual
 - https://nixos.org/nixos/nix-pills/
+
+# Wifi
+
+```
+$ sudo nmcli dev wifi
+```
+
+## Google Chrome PPA
+
+```
+$ wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+$ sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+$ sudo apt update
+$ sudo apt install google-chrome-unstable
+```
+
+## Postgres:
+
+    $ sudo apt-get install postgresql
+    $ sudo update-rc.d postgresql disable
+
+Then you can start and stop the service with
+
+    .$ sudo service postgresql start|stop
+
+To interact with the database you need to be logged in as the local postgres user:
+
+    .$ sudo -u postgres createdb uaa
+    .$ sudo -u postgres psql -d uaa
+    postgres=# create role root NOSUPERUSER LOGIN INHERIT CREATEDB
+    postgres=# alter role root with password 'changeme'
+    postgres=# \q
+
+To connect locally with JDBC that should be enough.  To use the command line for the uaa user, replace all entries in the default `/etc/postgresql/*/main/pg_hba.conf` with
+
+    local	all		all					trust
+    host	all		all		127.0.0.1/32		trust
+    host	all		all		::1/128			trust
+
+after which you can log in on the command line:
+
+    $ psql -d uaa -U root -W
+    Password for user root: 
+    psql (9.1.1)
+    Type "help" for help.
+    uaa=> \q
+	
+## Lastpass CLI
+
+In `shell.nix`:
+
+    with import <nixpkgs> {
+      overlays = [
+        (self: super: {
+          lastpass-cli = super.lastpass-cli.overrideAttrs (oldAttrs: rec {
+            version = "1.6.0"; # this is the default in nixpkgs/main
+            src = self.fetchFromGitHub {
+              owner = "lastpass";
+              repo = "lastpass-cli";
+              rev = "v${version}";
+              sha256 = "054dvz273m0w30lf85qidwzmgwrvdjasdgmnhrgix4wjsrikrw8p";
+            };
+            patches = [];
+        });
+        })
+      ];
+    };
+    mkShell {
+      buildInputs = [
+        lastpass-cli
+       ];
+    }
+
+Then
+
+    $ nix-shell
+	$ lpass login --trust david_syer@hotmail.com
+	$ lpass sync
+	$ lpass show --password 8626486485653997789
+
+## CIFS Mounts
+
+The username is the Windows local user and the password is how you log onto the windows box (probably Microsoft Live account):
+
+    .$ sudo mount -t cifs -o user=david,password="$(lpass show --password 8626486485653997789)",uid=$(id -u),gid=$(id -g) //alien/david /mnt/alien/
