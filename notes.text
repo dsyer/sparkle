@@ -2,7 +2,8 @@
 
       -agentlib:jdwp=transport=dt_socket,server=y,address=8000
 
-  The process will pause and wait for debugger to attach.  If it forks
+  The process will pause and wait for debugger to attach (add `suspend=n` to
+  launch without waiting.  If it forks
   additional Java processes they behave the same way (so you have to
   attach again).
   
@@ -911,3 +912,4 @@ Then
 The username is the Windows local user and the password is how you log onto the windows box (probably Microsoft Live account):
 
     .$ sudo mount -t cifs -o user=david,password="$(lpass show --password 8626486485653997789)",uid=$(id -u),gid=$(id -g) //alien/david /mnt/alien/
+
